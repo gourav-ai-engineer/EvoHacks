@@ -41,7 +41,7 @@ And it does this safely:
 - **Frontend:** HTML, CSS and vanilla JavaScript, responsive and accessible (keyboard shortcuts, skip link, ARIA live regions, reduced-motion support).
 - **AI:** Google Gemini (`gemini-3.5-flash-lite` by default) through a Vercel serverless function, with a JSON response schema, an action-enum allowlist, a 12-second timeout, a retry without schema, per-client rate limiting and a deterministic fallback.
 - **Crypto:** a pure-JS SHA-256 (verified against Node's crypto in tests) plus canonical JSON for hash-chained audit events and report integrity.
-- **Quality:** 38 tests on Node's built-in runner (core logic, API with a mocked Gemini, CLI), and GitHub Actions on Node 18 and 22 with a red-team gate.
+- **Quality:** 38 tests on Node's built-in runner (core logic, API with a mocked Gemini, CLI), and GitHub Actions on Node 22 and 24 with a red-team gate.
 - **Zero-dependency local server and CLI**, so judges can run everything with only Node installed.
 
 ## Challenges we ran into
