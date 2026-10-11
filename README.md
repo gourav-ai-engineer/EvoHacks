@@ -32,7 +32,7 @@ Then visit http://localhost:8000. The local rules engine works without an API ke
 
 ## Optional Gemini AI planning
 
-For AI-generated plans, deploy on Vercel and set GEMINI_API_KEY as a server-side environment variable. Do not put the key in app.js, HTML, screenshots, or a public repository. Optionally set GEMINI_MODEL; the default is gemini-2.5-flash.
+For AI-generated plans, deploy on Vercel and set GEMINI_API_KEY as a server-side environment variable. Do not put the key in app.js, HTML, screenshots, or a public repository. Optionally set GEMINI_MODEL; the default is gemini-3.5-flash-lite. Google's current Gemini API pricing documentation lists Flash-Lite with free-tier input and output tokens; quotas and availability can change.
 
 The browser calls /api/plan. The server function calls the Gemini generate-content API, constrains the model to a small action vocabulary, and applies server-side checks. The browser applies an additional validation pass. If the provider is unavailable or no key is configured, the API returns the deterministic local plan.
 
