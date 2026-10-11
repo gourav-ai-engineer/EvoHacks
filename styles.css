@@ -254,3 +254,10 @@ code{font:10px var(--mono);background:#1a2337;border:1px solid #2c3852;border-ra
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 .redteam-list:not(:empty){margin-bottom:12px}
+
+/* Long AI-written titles and engine labels wrap instead of squeezing the title. */
+.plan-result-head{flex-wrap:wrap}
+.plan-result-head>div{flex:1 1 260px;min-width:0}
+.engine-label{white-space:normal;max-width:100%}
+/* Metric footers wrap on narrower screens instead of clipping. */
+@media(max-width:1280px){.metric-foot{white-space:normal;flex-wrap:wrap;row-gap:3px}}
