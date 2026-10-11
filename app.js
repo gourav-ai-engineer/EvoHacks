@@ -149,7 +149,10 @@ async function generatePlan(input) {
     });
     if (response.ok) {
       const data = await response.json();
-      if (data && data.plan) return normalizePlan(data.plan, input);
+      if (data && data.plan) {
+        if (data.mode === "local-demo" || data.mode === "local-fallback") return localPlanner(input);
+        return normalizePlan(data.plan, input);
+      }
     }
   } catch (error) {
     // Offline, local-file, and static-host runs intentionally use the local fallback.
