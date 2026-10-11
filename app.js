@@ -117,7 +117,8 @@ function normalizePlan(raw, input) {
       guardrail:String((step && step.guardrail) || (action === "request_approval" ? "HUMAN GATE" : "CHECK")).slice(0,40)
     };
   });
-  const riskLevel = isPromptInjection(input) ? "BLOCKED" : validRisk;
+  const riskRank = {LOW:0, MEDIUM:1, HIGH:2, BLOCKED:3};
+  const riskLevel = isPromptInjection(input) ? "BLOCKED" : (riskRank[validRisk] >= riskRank[fallback.riskLevel] ? validRisk : fallback.riskLevel);
   const requiresApproval = riskLevel === "HIGH" || riskLevel === "BLOCKED" || Boolean(raw.requiresApproval) || fallback.requiresApproval;
   let safeSteps = steps.length ? steps : fallback.steps;
   if (riskLevel === "BLOCKED" && !safeSteps.some((step) => step.action === "request_approval")) {
