@@ -129,3 +129,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({plan:localPlan(input),mode:"local-fallback"});
   }
 };
+
+// Export internals for deterministic safety tests; the default export remains the Vercel handler.
+module.exports.localPlan = localPlan;
+module.exports.ALLOWED_ACTIONS = ALLOWED_ACTIONS;
