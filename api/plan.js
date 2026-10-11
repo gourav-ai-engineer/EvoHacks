@@ -92,7 +92,9 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({plan:localPlan(input),mode:"local-fallback"});
     }
     const fallback = localPlan(input);
-    const riskLevel = ["LOW","MEDIUM","HIGH","BLOCKED"].includes(String(parsed.riskLevel || "").toUpperCase()) ? String(parsed.riskLevel).toUpperCase() : fallback.riskLevel;
+    const candidateRisk = ["LOW","MEDIUM","HIGH","BLOCKED"].includes(String(parsed.riskLevel || "").toUpperCase()) ? String(parsed.riskLevel).toUpperCase() : fallback.riskLevel;
+    const riskRank = {LOW:0,MEDIUM:1,HIGH:2,BLOCKED:3};
+    const riskLevel = riskRank[candidateRisk] >= riskRank[fallback.riskLevel] ? candidateRisk : fallback.riskLevel;
     const steps = Array.isArray(parsed.steps) ? parsed.steps.slice(0,6).map((step) => ({
       title:String((step && step.title) || "Review proposed step").slice(0,90),
       action:ALLOWED_ACTIONS.has(step && step.action) ? step.action : "request_approval",
