@@ -4,26 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1020">
-  <meta name="description" content="RelayProof turns messy requests into safe, verifiable AI workflows.">
+  <meta name="description" content="RelayProof turns messy requests into safe, verifiable AI workflows — with an injection shield, privacy redaction, a human approval gate and a tamper-evident audit trail.">
+  <meta property="og:title" content="RelayProof — AI automation with proof before action">
+  <meta property="og:description" content="Plan first. Prove it. Then act. Safe AI automation for everyday operations.">
   <title>RelayProof — Safe AI Automation</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/app.js" defer></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="lib/core.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#requestText">Skip to request input</a>
   <div class="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="#" aria-label="RelayProof home">
+      <a class="brand" href="#console" aria-label="RelayProof home">
         <span class="brand-mark"><span></span><span></span><span></span></span>
         <span class="brand-copy"><strong>relayproof</strong><small>SAFE AUTOMATION LAYER</small></span>
       </a>
       <div class="sidebar-label">WORKSPACE</div>
       <nav class="nav-list" aria-label="Main navigation">
-        <a class="nav-item active" href="#console"><span class="nav-icon">◈</span> Workflow studio <span class="nav-dot"></span></a>
-        <a class="nav-item" href="#activity"><span class="nav-icon">◷</span> Run history <span class="nav-count" id="navRunCount">0</span></a>
-        <a class="nav-item" href="#guardrails"><span class="nav-icon">⬡</span> Guardrails</a>
+        <a class="nav-item active" href="#console" data-nav="console"><span class="nav-icon">◈</span> Workflow studio <span class="nav-dot"></span></a>
+        <a class="nav-item" href="#inbox" data-nav="inbox"><span class="nav-icon">⇶</span> Inbox autopilot</a>
+        <a class="nav-item" href="#activity" data-nav="activity"><span class="nav-icon">◷</span> Run history <span class="nav-count" id="navRunCount">0</span></a>
+        <a class="nav-item" href="#guardrails" data-nav="guardrails"><span class="nav-icon">⬡</span> Guardrails</a>
       </nav>
       <div class="sidebar-label side-label-spaced">SAFETY STATUS</div>
       <div class="sidebar-safety">
@@ -42,17 +48,17 @@
     <main class="main-content" id="console">
       <header class="topbar">
         <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong>Workflow studio</strong></div>
-        <div class="topbar-right"><span class="status-pill"><span class="live-dot"></span> SYSTEM OPERATIONAL</span><span class="topbar-divider"></span><span class="topbar-date" id="todayLabel">LOCAL SANDBOX</span></div>
+        <div class="topbar-right"><span class="status-pill" id="apiStatusPill"><span class="live-dot"></span> <span id="apiStatusText">CHECKING ENGINE…</span></span><span class="topbar-divider"></span><span class="topbar-date" id="todayLabel">LOCAL SANDBOX</span></div>
       </header>
 
       <section class="hero">
         <div>
           <div class="eyebrow"><span class="eyebrow-line"></span> AI AUTOMATION, WITH PROOF</div>
-          <h1>Make the busywork<br><span class="headline-gradient">move itself.</span></h1>
-          <p class="hero-copy">Turn unstructured requests into actions you can inspect, validate, and trust. Every run leaves an audit trail. Nothing touches a real system in this demo.</p>
-          <div class="hero-proof"><span class="hero-proof-icon">✳</span><span>AI plan</span><span class="proof-arrow">→</span><span>Policy check</span><span class="proof-arrow">→</span><span>Verified simulation</span></div>
+          <h1>Make the busywork<br><span class="headline-gradient">move itself — safely.</span></h1>
+          <p class="hero-copy">Paste a messy request or a whole inbox. RelayProof extracts the details, drafts the follow-ups, and asks for what is missing. Risky actions pause for a human, attacks are blocked, and every run leaves a tamper-evident audit trail.</p>
+          <div class="hero-proof"><span class="hero-proof-icon">✳</span><span>Shield</span><span class="proof-arrow">→</span><span>AI plan</span><span class="proof-arrow">→</span><span>Verify</span><span class="proof-arrow">→</span><span>Human gate</span><span class="proof-arrow">→</span><span>Proof</span></div>
         </div>
-        <div class="hero-graphic" aria-label="Automation flow illustration">
+        <div class="hero-graphic" aria-hidden="true">
           <div class="graphic-orbit orbit-one"></div><div class="graphic-orbit orbit-two"></div>
           <div class="graphic-center"><span class="center-spark">✳</span><span class="center-word">RELAY<span>PROOF</span></span><small>CONTROLLED AUTONOMY</small></div>
           <div class="graphic-node node-a"><span class="node-glyph">⌁</span><span>REQUEST</span></div>
@@ -62,11 +68,11 @@
         </div>
       </section>
 
-      <section class="metrics-row" aria-label="Safety metrics">
-        <article class="metric-card"><div class="metric-top"><span class="metric-label">RUNS IN THIS SESSION</span><span class="metric-symbol">↗</span></div><div class="metric-number" id="metricRuns">00</div><div class="metric-foot"><span class="metric-neutral">Session only</span><span>Local audit log</span></div></article>
-        <article class="metric-card"><div class="metric-top"><span class="metric-label">VERIFICATION GATES</span><span class="metric-symbol green">✓</span></div><div class="metric-number">04<span class="metric-unit"> / 04</span></div><div class="metric-foot"><span class="metric-good"><i></i> Active</span><span>Before every run</span></div></article>
-        <article class="metric-card"><div class="metric-top"><span class="metric-label">EXTERNAL SIDE EFFECTS</span><span class="metric-symbol amber">⊘</span></div><div class="metric-number">0</div><div class="metric-foot"><span class="metric-neutral">Disabled</span><span>By design</span></div></article>
-        <article class="metric-card"><div class="metric-top"><span class="metric-label">AUTOMATION ENGINE</span><span class="metric-symbol violet">✳</span></div><div class="metric-number metric-engine" id="engineMetric">LOCAL<span class="engine-period">.</span></div><div class="metric-foot"><span class="metric-neutral" id="engineFoot">Deterministic demo mode</span><span>Gemini optional</span></div></article>
+      <section class="metrics-row" aria-label="Session metrics">
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">RUNS SAVED LOCALLY</span><span class="metric-symbol">↗</span></div><div class="metric-number" id="metricRuns">00</div><div class="metric-foot"><span class="metric-neutral" id="metricRunsFoot">No runs yet</span><span>Redacted audit log</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">MANUAL WORK PREPARED</span><span class="metric-symbol green">◷</span></div><div class="metric-number" id="metricMinutes">0<span class="metric-unit"> min</span></div><div class="metric-foot"><span class="metric-good"><i></i> Estimate</span><span>Per-step assumptions</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">THREATS BLOCKED</span><span class="metric-symbol amber">⊘</span></div><div class="metric-number" id="metricBlocked">0</div><div class="metric-foot"><span class="metric-neutral">Injection shield</span><span id="metricGated">0 gated for humans</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span class="metric-label">AUTOMATION ENGINE</span><span class="metric-symbol violet">✳</span></div><div class="metric-number metric-engine" id="engineMetric">LOCAL<span class="engine-period">.</span></div><div class="metric-foot"><span class="metric-neutral" id="engineFoot">Deterministic rules</span><span>Gemini optional</span></div></article>
       </section>
 
       <section class="studio-grid">
@@ -80,57 +86,126 @@
             <button class="scenario-chip selected" type="button" data-sample="access"><span class="scenario-icon purple">⌘</span><span><strong>Access request</strong><small>School operations</small></span></button>
             <button class="scenario-chip" type="button" data-sample="invoice"><span class="scenario-icon orange">＄</span><span><strong>Invoice exception</strong><small>Finance operations</small></span></button>
             <button class="scenario-chip" type="button" data-sample="refund"><span class="scenario-icon blue">↶</span><span><strong>Refund request</strong><small>Customer support</small></span></button>
+            <button class="scenario-chip" type="button" data-sample="attack"><span class="scenario-icon red">⚠</span><span><strong>Attack attempt</strong><small>Prompt injection</small></span></button>
           </div>
           <form id="runForm">
             <label class="input-label" for="requestText">WHAT NEEDS TO HAPPEN?</label>
             <textarea id="requestText" maxlength="10000" placeholder="Example: A new teaching assistant needs access to the computer lab for the Tuesday afternoon session. Check that the request has an owner and date, draft the approval message, and flag any missing details." required>A new teaching assistant needs computer lab access for Tuesday afternoon. Check that the request has an owner and date, draft an approval message, and flag anything missing.</textarea>
-            <div class="input-meta"><span><span class="tiny-lock">▣</span> Demo data only — avoid real personal or secret data</span><span id="charCount">0 / 10000</span></div>
-            <div class="run-options"><span class="option-check"><span class="check-box">✓</span> Require verification before staging</span><span class="mode-chip"><span></span> DRY RUN</span></div>
-            <button class="primary-button" type="submit" id="runButton"><span class="button-spark">✳</span><span id="runButtonText">Build &amp; verify workflow</span><span class="button-arrow">↗</span></button>
+            <div class="input-meta"><span><span class="tiny-lock">▣</span> Emails, phone numbers, cards and secrets are redacted automatically</span><span id="charCount">0 / 10000</span></div>
+            <div class="run-options">
+              <label class="engine-select-label" for="engineSelect">ENGINE
+                <select id="engineSelect">
+                  <option value="auto">Auto — AI when available</option>
+                  <option value="local">Local rules only</option>
+                </select>
+              </label>
+              <span class="mode-chip"><span></span> DRY RUN</span>
+            </div>
+            <button class="primary-button" type="submit" id="runButton"><span class="button-spark">✳</span><span id="runButtonText">Build &amp; verify workflow</span><span class="kbd-hint">Ctrl ↵</span><span class="button-arrow">↗</span></button>
             <div class="privacy-caption"><span>◇</span> No emails sent. No records changed. Every action is simulated.</div>
           </form>
         </article>
 
-        <article class="panel plan-panel" id="guardrails">
+        <article class="panel plan-panel">
           <div class="panel-heading plan-heading">
             <div><div class="section-index">02 <span> / EXECUTION PLAN</span></div><h2>Proof before action</h2><p>Every step must pass the policy gate.</p></div>
             <span class="risk-badge neutral" id="riskBadge">AWAITING INPUT</span>
           </div>
-          <div class="workflow-track" id="workflowTrack">
-            <div class="track-step active"><span class="track-icon">⌁</span><span><strong>Understand</strong><small>Intent &amp; fields</small></span><span class="track-state">READY</span></div>
+          <div class="workflow-track five" id="workflowTrack">
+            <div class="track-step active"><span class="track-icon">⛨</span><span><strong>Shield</strong><small>Injection &amp; PII</small></span><span class="track-state">READY</span></div>
             <div class="track-connector"><span></span></div>
-            <div class="track-step"><span class="track-icon">◇</span><span><strong>Validate</strong><small>Rules &amp; risk</small></span><span class="track-state">WAITING</span></div>
+            <div class="track-step"><span class="track-icon">⌁</span><span><strong>Plan</strong><small>Intent &amp; fields</small></span><span class="track-state">WAITING</span></div>
+            <div class="track-connector"><span></span></div>
+            <div class="track-step"><span class="track-icon">◇</span><span><strong>Verify</strong><small>6 gates</small></span><span class="track-state">WAITING</span></div>
+            <div class="track-connector"><span></span></div>
+            <div class="track-step"><span class="track-icon">☝</span><span><strong>Human gate</strong><small>Approve / reject</small></span><span class="track-state">WAITING</span></div>
             <div class="track-connector"><span></span></div>
             <div class="track-step"><span class="track-icon">▶</span><span><strong>Simulate</strong><small>No side effects</small></span><span class="track-state">WAITING</span></div>
-            <div class="track-connector"><span></span></div>
-            <div class="track-step"><span class="track-icon">✓</span><span><strong>Verify</strong><small>Postconditions</small></span><span class="track-state">WAITING</span></div>
           </div>
-          <div class="plan-output" id="planOutput">
-            <div class="empty-plan"><div class="empty-icon"><span>✳</span></div><strong>Your workflow will appear here</strong><p>Choose a scenario or enter a request, then build a plan. RelayProof will explain what it intends to do before any action is staged.</p><div class="empty-mini"><span>01</span> Intent extraction <span>02</span> Policy check <span>03</span> Verification</div></div>
-          </div>
-          <div class="panel-bottom"><span class="bottom-lock">▣</span><span>Policy enforced locally</span><span class="bottom-divider"></span><span>Action allowlist enabled</span><span class="bottom-spacer"></span><span class="version-pill">v0.1.0</span></div>
+          <div class="plan-output" id="planOutput" aria-live="polite"></div>
+          <div class="panel-bottom"><span class="bottom-lock">▣</span><span>Policy enforced locally</span><span class="bottom-divider"></span><span>Action allowlist enabled</span><span class="bottom-spacer"></span><span class="version-pill" id="versionPill">v1.0.0</span></div>
         </article>
       </section>
 
-      <section class="lower-grid" id="activity">
-        <article class="panel audit-panel">
-          <div class="panel-heading lower-heading"><div><div class="section-index">03 <span> / EVIDENCE</span></div><h2>Verification report</h2></div><span class="report-id" id="reportId">NO RUN SELECTED</span></div>
-          <div class="checks-list" id="checksList">
-            <div class="check-row waiting"><span class="check-status">○</span><span class="check-copy"><strong>Action allowlist</strong><small>Only supported actions may enter the plan.</small></span><span class="check-result">WAITING</span></div>
-            <div class="check-row waiting"><span class="check-status">○</span><span class="check-copy"><strong>Risk gate</strong><small>Sensitive requests require human review.</small></span><span class="check-result">WAITING</span></div>
-            <div class="check-row waiting"><span class="check-status">○</span><span class="check-copy"><strong>Output contract</strong><small>Required fields and steps are present.</small></span><span class="check-result">WAITING</span></div>
-            <div class="check-row waiting"><span class="check-status">○</span><span class="check-copy"><strong>Side-effect lock</strong><small>No external systems are connected.</small></span><span class="check-result">WAITING</span></div>
+      <section class="lower-grid gate-grid">
+        <article class="panel gate-panel" id="gate">
+          <div class="panel-heading lower-heading"><div><div class="section-index">03 <span> / HUMAN GATE &amp; OUTPUTS</span></div><h2>Decide, then deliver</h2></div><span class="report-id" id="gateStatus">NO RUN</span></div>
+          <div id="gateBox" aria-live="polite"></div>
+          <div class="artifact-tabs" role="tablist" aria-label="Generated outputs">
+            <button class="artifact-tab active" type="button" role="tab" data-tab="draft" aria-selected="true">Draft message</button>
+            <button class="artifact-tab" type="button" role="tab" data-tab="task" aria-selected="false">Task ticket</button>
+            <button class="artifact-tab" type="button" role="tab" data-tab="questions" aria-selected="false">Clarifications <span class="tab-count" id="questionCount">0</span></button>
           </div>
-          <div class="report-footer"><span class="report-shield">⬡</span><span id="reportSummary">Run a workflow to produce verifiable evidence.</span><button class="text-button" id="exportButton" type="button" disabled>Export report ↗</button></div>
+          <div class="artifact-body" id="artifactBody" role="tabpanel"></div>
+          <div class="artifact-actions">
+            <button class="secondary-button" type="button" id="copyArtifactButton" disabled>Copy</button>
+            <button class="secondary-button" type="button" id="downloadArtifactButton" disabled>Download</button>
+            <button class="secondary-button accent" type="button" id="mailButton" disabled title="Opens your own email app with the draft. Unlocked only after approval.">Open in email app ↗</button>
+            <span class="artifact-note" id="artifactNote">Outputs appear after a run.</span>
+          </div>
         </article>
-        <article class="panel history-panel">
-          <div class="panel-heading lower-heading"><div><div class="section-index">04 <span> / AUDIT TRAIL</span></div><h2>Recent runs</h2></div><button class="text-button" id="clearHistoryButton" type="button">Clear</button></div>
-          <div class="history-list" id="historyList"><div class="history-empty"><span>◷</span><p>No runs yet.</p><small>Your session activity will show here.</small></div></div>
-          <div class="history-foot"><span class="live-dot"></span> Session-local log <span class="history-foot-spacer"></span><span id="historyCount">0 records</span></div>
+
+        <article class="panel audit-panel" id="evidence">
+          <div class="panel-heading lower-heading"><div><div class="section-index">04 <span> / EVIDENCE</span></div><h2>Verification report</h2></div><span class="report-id" id="reportId">NO RUN SELECTED</span></div>
+          <div class="checks-list" id="checksList"></div>
+          <div class="chain-heading"><span>HASH-CHAINED AUDIT TRAIL</span><span id="chainStatus">—</span></div>
+          <ol class="chain-list" id="chainList"></ol>
+          <div class="verify-result" id="verifyResult" hidden></div>
+          <div class="report-footer"><span class="report-shield">⬡</span><span id="reportSummary">Run a workflow to produce verifiable evidence.</span>
+            <button class="text-button" id="verifyButton" type="button">Verify a report…</button>
+            <button class="text-button" id="exportButton" type="button" disabled>Export report ↗</button>
+            <input type="file" id="verifyFile" accept="application/json,.json" hidden>
+          </div>
         </article>
       </section>
-      <footer class="page-footer"><span class="footer-brand"><span class="footer-mark">✳</span> RELAYPROOF</span><span>Autonomy is earned through verification.</span><span>BUILT FOR RESPONSIBLE AI AUTOMATION</span></footer>
+
+      <section class="panel inbox-panel" id="inbox">
+        <div class="panel-heading lower-heading">
+          <div><div class="section-index">05 <span> / INBOX AUTOPILOT</span></div><h2>Triage a whole inbox in one click</h2><p>One request per block — separate with a blank line or a line of <code>---</code>. Up to 20 at a time.</p></div>
+          <span class="panel-tag">BATCH MODE</span>
+        </div>
+        <div class="inbox-grid">
+          <div class="inbox-input">
+            <label class="input-label" for="inboxText">INBOX</label>
+            <textarea id="inboxText" placeholder="Paste several requests here…"></textarea>
+            <div class="inbox-buttons">
+              <button class="secondary-button" type="button" id="loadInboxButton">Load sample inbox</button>
+              <button class="primary-button compact" type="button" id="runInboxButton"><span class="button-spark">⇶</span><span id="runInboxText">Run autopilot</span></button>
+            </div>
+            <div class="progress" aria-hidden="true"><span id="inboxProgress"></span></div>
+            <p class="inbox-note">Bulk approval is disabled by design: every gated request needs its own human decision.</p>
+          </div>
+          <div class="inbox-results">
+            <div class="inbox-summary" id="inboxSummary">
+              <span class="summary-chip"><strong>0</strong> processed</span>
+            </div>
+            <div class="inbox-table" id="inboxTable" role="list"><div class="history-empty small"><span>⇶</span><p>No batch yet.</p><small>Load the sample inbox to see six requests triaged at once.</small></div></div>
+            <div class="inbox-footer"><button class="text-button" id="exportCsvButton" type="button" disabled>Export CSV ↗</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lower-grid" id="activity">
+        <article class="panel history-panel">
+          <div class="panel-heading lower-heading"><div><div class="section-index">06 <span> / AUDIT TRAIL</span></div><h2>Run history</h2></div><button class="text-button" id="clearHistoryButton" type="button">Clear</button></div>
+          <div class="history-list" id="historyList"></div>
+          <div class="history-foot"><span class="live-dot"></span> Stored in this browser · redacted <span class="history-foot-spacer"></span><span id="historyCount">0 records</span></div>
+        </article>
+        <article class="panel guardrails-panel" id="guardrails">
+          <div class="panel-heading lower-heading"><div><div class="section-index">07 <span> / GUARDRAILS</span></div><h2>Policy &amp; red team</h2></div><button class="text-button" id="redTeamButton" type="button">Run red-team suite ▶</button></div>
+          <div class="redteam-score" id="redTeamScore" hidden></div>
+          <div class="guard-scroll">
+            <div class="redteam-list" id="redTeamList"></div>
+            <div class="guard-section-label">HARD BLOCKS — ALWAYS STOP</div>
+            <div class="guard-blocks" id="injectionRules"></div>
+            <div class="guard-section-label">RISK SIGNALS — SCORED 0–100 <span>LOW &lt;25 · MEDIUM 25–49 · HIGH ≥50</span></div>
+            <div class="guard-rules" id="riskRules"></div>
+          </div>
+        </article>
+      </section>
+      <footer class="page-footer"><span class="footer-brand"><span class="footer-mark">✳</span> RELAYPROOF</span><span>Autonomy is earned through verification.</span><span>BUILT FOR EVOHACKS 2026 · AI FOR AUTOMATION</span></footer>
     </main>
   </div>
+  <noscript><div class="noscript">RelayProof needs JavaScript to run its local policy engine.</div></noscript>
 </body>
 </html>

@@ -1,0 +1,21 @@
+{
+  "name": "relayproof",
+  "version": "1.0.0",
+  "description": "AI automation with proof before action: injection shield, privacy redaction, human approval gate and tamper-evident audit trail.",
+  "private": true,
+  "license": "MIT",
+  "main": "lib/core.js",
+  "bin": {
+    "relayproof": "cli.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "check": "node --check lib/core.js && node --check app.js && node --check api/plan.js && node --check server.js && node --check cli.js",
+    "redteam": "node cli.js redteam",
+    "demo": "node cli.js batch --sample"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
