@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/plan.js": {
+      "maxDuration": 20
+    }
+  }
+}
