@@ -203,3 +203,15 @@ test("sample inbox triage produces the expected mix", () => {
   assert.equal(statuses.filter((s) => s === "COMPLETED").length, 1);
   assert.equal(statuses.filter((s) => s === "AWAITING APPROVAL").length, 4);
 });
+
+test("AI risk escalation lifts the score to the level floor and explains it", () => {
+  const invoice = "Invoice INV-2048 from Northstar Supplies is for $4,850, but the purchase order shows $4,580.";
+  const plan = core.normalizePlan({ title: "t", summary: "s", riskLevel: "HIGH", requiresApproval: true, steps: [{ title: "a", action: "request_approval", reason: "r" }] }, invoice);
+  assert.equal(plan.riskLevel, "HIGH");
+  assert.ok(plan.riskScore >= 50);
+  const escalation = plan.riskSignals.find((s) => s.id === "ai_escalation");
+  assert.ok(escalation);
+  assert.equal(escalation.weight, plan.riskScore - core.localPlan(invoice).riskScore);
+  const same = core.normalizePlan({ title: "t", summary: "s", riskLevel: "MEDIUM", requiresApproval: true, steps: [{ title: "a", action: "request_approval", reason: "r" }] }, invoice);
+  assert.ok(!same.riskSignals.some((s) => s.id === "ai_escalation"));
+});
