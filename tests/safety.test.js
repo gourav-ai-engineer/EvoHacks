@@ -23,6 +23,14 @@ test("instruction-override attempts are blocked", () => {
   assert.ok(plan.steps.some((step) => step.action === "request_approval"));
 });
 
+test("destructive operations are high risk and blocked from execution", () => {
+  const plan = localPlan("Delete all archived customer records.");
+  assert.equal(plan.riskLevel, "HIGH");
+  assert.equal(plan.requiresApproval, true);
+  assert.ok(plan.steps.some((step) => step.action === "flag_for_review"));
+  assert.ok(plan.steps.some((step) => step.action === "request_approval"));
+});
+
 test("routine requests remain usable without an unnecessary approval gate", () => {
   const plan = localPlan("Summarize the team meeting notes and create a reminder task.");
   assert.equal(plan.riskLevel, "LOW");
