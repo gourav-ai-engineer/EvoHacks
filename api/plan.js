@@ -30,6 +30,9 @@ function localPlan(input) {
     {title:"Stage a follow-up task",action:"create_task",reason:"Prepare a reviewable next step without external writes.",guardrail:"STAGED"},
     {title:"Draft an owner update",action:"draft_message",reason:"Create a draft for human inspection; do not send messages.",guardrail:"DRAFT ONLY"}
   ];
+  if (requiresApproval && !steps.some((step) => step.action === "request_approval")) {
+    steps.push({title:"Require human approval",action:"request_approval",reason:"Sensitive actions require review by an authorized person.",guardrail:"HUMAN GATE"});
+  }
   const ref = input.match(/\b(?:INV|ORD|PO|REQ|TICKET|CASE)[- #]?[A-Z0-9-]{2,}\b/i);
   return {
     title:suspicious ? "Potential instruction override" : financial ? "Operations exception review" : access ? "Access request workflow" : "Request-to-action workflow",
