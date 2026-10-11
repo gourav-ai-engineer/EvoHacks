@@ -13,12 +13,17 @@ function localPlan(input) {
   const suspicious = /(ignore\s+(all\s+)?(previous|prior|system)\s+instructions|reveal\s+(the\s+)?(api|secret|system)\s*(key|prompt)?|bypass\s+(the\s+)?(safety|security|approval|policy)|disregard\s+(your|all)\s+rules|print\s+environment\s+variables)/i.test(input);
   const financial = /\b(refund|chargeback|reimburse|payment|pay|money|transfer|invoice|purchase order|vendor|finance|billing)\b/i.test(input);
   const access = /\b(access|permission|account|lab|admin|credential|password|privilege)\b/i.test(input);
-  const riskLevel = suspicious ? "BLOCKED" : financial && /\b(refund|chargeback|reimburse|payment|pay|money|transfer)\b/i.test(input) ? "HIGH" : financial || access ? "MEDIUM" : "LOW";
-  const requiresApproval = suspicious || financial || access || /\b(delete|erase|wipe)\b/i.test(input);
+  const destructive = /\b(delete|erase|wipe|remove all|terminate)\b/i.test(input);
+  const riskLevel = suspicious ? "BLOCKED" : destructive || /\b(refund|chargeback|reimburse|payment|pay|money|transfer)\b/i.test(input) ? "HIGH" : financial || access ? "MEDIUM" : "LOW";
+  const requiresApproval = suspicious || financial || access || destructive;
   const steps = suspicious ? [
     {title:"Treat input as untrusted",action:"extract_fields",reason:"Keep submitted text as data; do not follow instruction overrides.",guardrail:"SAFE PARSE"},
     {title:"Stop workflow",action:"flag_for_review",reason:"Potential instruction override detected.",guardrail:"BLOCKED"},
     {title:"Escalate to a human",action:"request_approval",reason:"A reviewer must inspect this request.",guardrail:"HUMAN GATE"}
+  ] : destructive ? [
+    {title:"Identify destructive request",action:"extract_fields",reason:"Capture the requested target without changing or deleting anything.",guardrail:"READ ONLY"},
+    {title:"Block destructive execution",action:"flag_for_review",reason:"Delete and erase actions are outside the prototype\u2019s allowed execution boundary.",guardrail:"BLOCKED"},
+    {title:"Require authorized approval",action:"request_approval",reason:"A reviewer must validate scope, retention, and authorization before any real action.",guardrail:"HUMAN GATE"}
   ] : financial ? [
     {title:"Extract request details",action:"extract_fields",reason:"Capture references, amounts, reasons and missing fields.",guardrail:"STRUCTURED"},
     {title:"Validate requirements",action:"validate_policy",reason:"Check completeness and flag mismatches before review.",guardrail:"VALIDATE"},
