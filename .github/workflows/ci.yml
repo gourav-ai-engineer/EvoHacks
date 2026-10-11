@@ -9,17 +9,21 @@ on:
 jobs:
   safety-tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 22]
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ matrix.node-version }}
       - name: Check JavaScript syntax
-        run: |
-          node --check app.js
-          node --check api/plan.js
-          node --check tests/safety.test.js
-      - name: Run policy tests
-        run: node --test
+        run: npm run check
+      - name: Run unit, API and CLI tests
+        run: npm test
+      - name: Red-team gate (adversarial prompt suite)
+        run: node cli.js redteam
+      - name: Sample inbox smoke test
+        run: node cli.js batch --sample
